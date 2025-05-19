@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-5 col-md-8">
+        <div class="card border-0 shadow-lg animated-card">
+            <div class="card-header bg-primary text-white text-center py-4">
+                <div class="mb-3">
+                    <img src="{{ url_for('static', filename='images/flow-logo.svg') }}" alt="Flow Logo" class="login-logo">
+                </div>
+                <h3 class="mb-0">Sistema de Gestión de VMs</h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('auth.login') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-4">
+                        <label for="username" class="form-label fw-bold">
+                            <i class="bi bi-person-fill me-1"></i>{{ form.username.label.text }}
+                        </label>
+                        {{ form.username(class="form-control form-control-lg", placeholder="Ingrese su nombre de usuario") }}
+                        {% if form.username.errors %}
+                            {% for error in form.username.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-bold">
+                            <i class="bi bi-shield-lock-fill me-1"></i>{{ form.password.label.text }}
+                        </label>
+                        {{ form.password(class="form-control form-control-lg", placeholder="Ingrese su contraseña") }}
+                        {% if form.password.errors %}
+                            {% for error in form.password.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg pulsate-btn") }}
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <div class="small text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Usuarios predeterminados:
+                    <br>
+                    <strong>Administrador:</strong> admin / SvaTecnica1
+                    <br>
+                    <strong>Cliente:</strong> cliente / Personal2
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center py-3 flow-header-gradient">
+                <h4 class="card-title mb-0 d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='images/flow-logo.svg') }}" 
+                         alt="Flow Logo" 
+                         class="me-2 flow-logo-spin" 
+                         style="height: 32px;">
+                    <span class="flow-accent animated-text">{{ title }}</span>
+                </h4>
+                <div class="flow-dots">
+                    <div class="flow-dot"></div>
+                    <div class="flow-dot"></div>
+                    <div class="flow-dot"></div>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control", placeholder="Nombre descriptivo para la VM") }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.requester_name.label(class="form-label") }}
+                            {{ form.requester_name(class="form-control", placeholder="Nombre completo del solicitante") }}
+                        </div>
+
+                        <div class="col-md-4">
+                            {{ form.cpu_count.label(class="form-label") }}
+                            {{ form.cpu_count(class="form-control animated-input", placeholder="Ej: 2") }}
+                            <div class="form-text">Mínimo: 1 CPU</div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.ram_amount.label(class="form-label") }}
+                            {{ form.ram_amount(class="form-control animated-input", placeholder="Ej: 4") }}
+                            <div class="form-text">Mínimo: 1GB de RAM</div>
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.disk_size.label(class="form-label") }}
+                            {{ form.disk_size(class="form-control animated-input", placeholder="Ej: 50") }}
+                            <div class="form-text">Mínimo: 10GB de disco</div>
+                        </div>
+
+                        <div class="col-12">
+                            <hr class="my-4">
+                            <h5 class="mb-4">Información Adicional</h5>
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.physical_location.label(class="form-label") }}
+                            {{ form.physical_location(class="form-control", placeholder="Ej: Datacenter Principal - Rack 3") }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.infrastructure_location.label(class="form-label") }}
+                            {{ form.infrastructure_location(class="form-control", placeholder="Ej: Cluster Production - Node 2") }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form.responsible_name.label(class="form-label") }}
+                            {{ form.responsible_name(class="form-control", placeholder="Nombre del responsable técnico") }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.responsible_email.label(class="form-label") }}
+                            {{ form.responsible_email(class="form-control", placeholder="correo@ejemplo.com") }}
+                        </div>
+
+                        <div class="col-12">
+                            {{ form.notes.label(class="form-label") }}
+                            {{ form.notes(class="form-control", rows="4", placeholder="Información adicional relevante...") }}
+                        </div>
+
+                        <div class="col-12 d-flex gap-2">
+                            {{ form.submit(class="btn btn-primary") }}
+                            <a href="{{ url_for('vm_list') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-lg me-1"></i>
+                                Cancelar
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

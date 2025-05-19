@@ -1,0 +1,540 @@
+/* Variables de color personalizadas */
+:root {
+    --status-pending: var(--bs-warning);
+    --status-active: var(--bs-success);
+    --status-rejected: var(--bs-danger);
+    --status-requested: var(--bs-info);
+    --flow-primary: #00ffcc;
+    --flow-secondary: #1a1a1a;
+    --flow-accent: #0099ff;
+    --flow-gradient-start: #0099ff;
+    --flow-gradient-end: #00ffcc;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes glow {
+    0% { filter: brightness(1); box-shadow: 0 0 5px rgba(0, 255, 204, 0.2); }
+    50% { filter: brightness(1.3); box-shadow: 0 0 20px rgba(0, 255, 204, 0.6); }
+    100% { filter: brightness(1); box-shadow: 0 0 5px rgba(0, 255, 204, 0.2); }
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(40, 40);
+        opacity: 0;
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink {
+    50% { border-color: transparent }
+}
+
+/* Login específicos */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+.flow-bg-gradient {
+    background: linear-gradient(135deg, var(--bs-dark) 0%, var(--bs-dark) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.flow-bg-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 10% 10%, rgba(0, 255, 204, 0.1), transparent 400px),
+                radial-gradient(circle at 90% 90%, rgba(0, 153, 255, 0.1), transparent 300px);
+    z-index: -1;
+}
+
+.border-glow {
+    border: 1px solid rgba(0, 255, 204, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
+}
+
+.login-logo-container {
+    margin-bottom: 2rem;
+    animation: fadeIn 1s ease-out;
+}
+
+.animated-pulse {
+    animation: pulse 3s ease-in-out infinite;
+}
+
+.animated-form-group {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.animated-form-group:hover {
+    transform: translateY(-2px);
+}
+
+.form-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--flow-primary);
+    opacity: 0.7;
+    z-index: 5;
+    transition: all 0.3s ease;
+}
+
+.animated-form-group:hover .form-icon {
+    color: var(--flow-accent);
+    opacity: 1;
+    animation: bounce 1s infinite;
+}
+
+.flow-decoration {
+    position: relative;
+    height: 0;
+}
+
+.flow-circle {
+    position: absolute;
+    background: radial-gradient(circle, var(--flow-primary) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.flow-circle:nth-child(1) {
+    width: 100px;
+    height: 100px;
+    top: -150px;
+    right: -20px;
+    animation: float 5s ease-in-out infinite;
+}
+
+.flow-circle:nth-child(2) {
+    width: 70px;
+    height: 70px;
+    top: -100px;
+    left: 30%;
+    animation: float 7s ease-in-out infinite;
+}
+
+.flow-circle:nth-child(3) {
+    width: 50px;
+    height: 50px;
+    top: -180px;
+    left: 10%;
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Logo y animaciones relacionadas */
+.animated-logo {
+    animation: float 3s ease-in-out infinite;
+}
+
+.flow-logo {
+    transition: all 0.3s ease;
+}
+
+.flow-logo:hover {
+    animation: glow 2s ease-in-out infinite;
+}
+
+.flow-logo-spin {
+    transition: all 0.3s ease;
+}
+
+.flow-logo-spin:hover {
+    animation: spin 3s linear infinite;
+}
+
+.navbar-logo {
+    height: 24px;
+    filter: drop-shadow(0 0 5px rgba(0, 255, 204, 0.5));
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover .navbar-logo {
+    filter: drop-shadow(0 0 10px rgba(0, 255, 204, 0.8));
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Navbar específicos */
+.flow-navbar {
+    border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.nav-animated {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-animated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--flow-primary);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-animated:hover {
+    color: var(--flow-primary) !important;
+}
+
+.nav-animated:hover::after {
+    width: 100%;
+}
+
+.nav-icon {
+    transition: all 0.3s ease;
+}
+
+.nav-animated:hover .nav-icon {
+    transform: scale(1.2);
+    color: var(--flow-primary);
+}
+
+.user-badge {
+    position: relative;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.user-badge:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Header gradientes */
+.flow-header-gradient {
+    background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(0,255,204,0.05) 100%);
+    border-bottom: 1px solid rgba(0, 255, 204, 0.1);
+}
+
+.flow-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.flow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--flow-primary);
+    opacity: 0.5;
+}
+
+.flow-dot:nth-child(1) {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.flow-dot:nth-child(2) {
+    animation: pulse 2s ease-in-out infinite 0.3s;
+}
+
+.flow-dot:nth-child(3) {
+    animation: pulse 2s ease-in-out infinite 0.6s;
+}
+
+.animated-text {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.animated-text::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--flow-primary), transparent);
+    animation: slideIn 2s ease-out;
+}
+
+/* Estilos generales */
+body {
+    min-height: 100vh;
+    background: var(--bs-dark);
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Formulario de login */
+.login-form {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Estilos de botones */
+.animated-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, var(--flow-primary), var(--flow-accent));
+    border: none;
+}
+
+.animated-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
+    background: linear-gradient(45deg, var(--flow-accent), var(--flow-primary));
+}
+
+.animated-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.animated-button:hover::after {
+    animation: ripple 1s ease-out;
+}
+
+/* Inputs animados */
+.animated-input {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 255, 204, 0.2);
+}
+
+.animated-input:focus {
+    border-color: var(--flow-primary);
+    box-shadow: 0 0 0 0.25rem rgba(0, 255, 204, 0.25);
+    transform: translateY(-2px);
+}
+
+/* Estilos de tarjetas */
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--bs-dark);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    border-bottom: 1px solid var(--bs-border-color);
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* Estilos de la tabla */
+.table {
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.table > :not(caption) > * > * {
+    padding: 1rem;
+}
+
+.table pre {
+    background-color: var(--bs-dark);
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+/* Animación para filas de tabla */
+.table tbody tr {
+    animation: slideIn 0.3s ease-out;
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 255, 204, 0.05);
+    transform: scale(1.01);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos de estado */
+.status-select {
+    min-width: 140px;
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 255, 204, 0.3);
+}
+
+.status-select:focus {
+    border-color: var(--flow-primary);
+    box-shadow: 0 0 0 0.25rem rgba(0, 255, 204, 0.25);
+}
+
+.badge {
+    padding: 0.5em 0.75em;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.badge.status-en-pedido {
+    background-color: var(--status-requested) !important;
+    animation: pulse 2s infinite;
+}
+
+.badge.status-activo {
+    background-color: var(--status-active) !important;
+    animation: glow 3s infinite;
+}
+
+.badge.status-rechazado {
+    background-color: var(--status-rejected) !important;
+    animation: pulse 2s infinite;
+}
+
+.badge.status-pendiente {
+    background-color: var(--status-pending) !important;
+    animation: pulse 3s infinite;
+}
+
+/* Estilos de botones */
+.btn {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border-radius: 0.375rem;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.btn i, .table i {
+    font-size: 1.1em;
+    transition: transform 0.3s ease;
+}
+
+.btn:hover i, .table tr:hover i {
+    transform: scale(1.2);
+}
+
+/* Estilos de formulario */
+.form-control {
+    border-radius: 0.375rem;
+    padding: 0.625rem 0.75rem;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 0.25rem rgba(0, 255, 204, 0.25);
+    transform: translateY(-1px);
+    border-color: var(--flow-primary);
+}
+
+/* Alertas personalizadas */
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+    animation: fadeIn 0.3s ease-out;
+    border-left: 4px solid var(--flow-primary);
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Tooltips */
+.tooltip {
+    font-size: 0.875rem;
+}
+
+/* Flow branding */
+.flow-accent {
+    color: var(--flow-primary);
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+}
+
+.flow-bg {
+    background-color: var(--flow-primary);
+}

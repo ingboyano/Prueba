@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center py-3">
+        <h4 class="card-title mb-0">
+            <img src="{{ url_for('static', filename='images/flow-logo.svg') }}" alt="Flow Logo" class="me-2" style="height: 24px;">
+            Máquinas Virtuales
+        </h4>
+        <a href="{{ url_for('new_vm') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i>
+            Nueva VM
+        </a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table id="vmTable" class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Solicitante</th>
+                        <th>Fecha Solicitud</th>
+                        <th>Recursos</th>
+                        <th>Ubicación</th>
+                        <th>Responsable</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vm in vms %}
+                    <tr>
+                        <td>
+                            <strong>{{ vm.name }}</strong>
+                            {% if vm.notes %}
+                            <i class="bi bi-info-circle ms-2 text-info" 
+                               data-bs-toggle="tooltip" 
+                               title="{{ vm.notes }}"></i>
+                            {% endif %}
+                        </td>
+                        <td>{{ vm.requester_name }}</td>
+                        <td>{{ vm.request_date.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td>
+                            <span class="d-block"><i class="bi bi-cpu me-1"></i>{{ vm.cpu_count }} CPUs</span>
+                            <span class="d-block"><i class="bi bi-memory me-1"></i>{{ vm.ram_amount }} GB RAM</span>
+                            <span class="d-block"><i class="bi bi-hdd me-1"></i>{{ vm.disk_size }} GB</span>
+                        </td>
+                        <td>
+                            {% if vm.physical_location %}
+                            <span class="d-block">
+                                <i class="bi bi-building me-1"></i>{{ vm.physical_location }}
+                            </span>
+                            {% endif %}
+                            {% if vm.infrastructure_location %}
+                            <span class="d-block">
+                                <i class="bi bi-diagram-3 me-1"></i>{{ vm.infrastructure_location }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="d-block">{{ vm.responsible_name }}</span>
+                            <small class="text-muted">
+                                <i class="bi bi-envelope me-1"></i>{{ vm.responsible_email }}
+                            </small>
+                        </td>
+                        <td>
+                            {% if current_user.is_admin %}
+                            <select class="form-select status-select" data-vm-id="{{ vm.id }}">
+                                <option value="EN PEDIDO" {% if vm.status == 'EN PEDIDO' %}selected{% endif %}>En Pedido</option>
+                                <option value="ACTIVO" {% if vm.status == 'ACTIVO' %}selected{% endif %}>Activo</option>
+                                <option value="RECHAZADO" {% if vm.status == 'RECHAZADO' %}selected{% endif %}>Rechazado</option>
+                                <option value="PENDIENTE" {% if vm.status == 'PENDIENTE' %}selected{% endif %}>Pendiente</option>
+                            </select>
+                            {% else %}
+                            <span class="badge status-{{ vm.status.lower().replace(' ', '-') }}">
+                                {{ vm.status.replace('_', ' ').title() }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                {% if current_user.is_admin %}
+                                <a href="{{ url_for('edit_vm', vm_id=vm.id) }}" 
+                                   class="btn btn-sm btn-primary"
+                                   data-bs-toggle="tooltip"
+                                   title="Editar VM">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                {% endif %}
+                                <a href="{{ url_for('vm_history', vm_id=vm.id) }}" 
+                                   class="btn btn-sm btn-info"
+                                   data-bs-toggle="tooltip"
+                                   title="Ver Historial">
+                                    <i class="bi bi-clock-history"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    $('#vmTable').DataTable({
+        order: [[2, 'desc']],
+        pageLength: 10,
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+        }
+    });
+
+    $('.status-select').change(function() {
+        const vmId = $(this).data('vm-id');
+        const newStatus = $(this).val();
+
+        fetch(`/vm/${vmId}/status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Error al actualizar el estado');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

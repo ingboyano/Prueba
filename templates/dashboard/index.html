@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <div class="d-flex align-items-center justify-content-between">
+            <h1 class="mb-0">
+                <i class="bi bi-speedometer2 me-2 text-primary"></i>
+                Panel de Control
+            </h1>
+            <div>
+                <a href="{{ url_for('vms.new_vm') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Nueva Solicitud VM
+                </a>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white animated-card shadow-sm">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="text-white">Total VMs</h5>
+                        <h2 class="display-5 mb-0">{{ vm_stats.total }}</h2>
+                    </div>
+                    <div class="fs-1">
+                        <i class="bi bi-hdd-stack"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-success text-white animated-card shadow-sm">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="text-white">Activas</h5>
+                        <h2 class="display-5 mb-0">{{ vm_stats.active }}</h2>
+                    </div>
+                    <div class="fs-1">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-warning text-white animated-card shadow-sm">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="text-white">Pendientes</h5>
+                        <h2 class="display-5 mb-0">{{ vm_stats.pending }}</h2>
+                    </div>
+                    <div class="fs-1">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-danger text-white animated-card shadow-sm">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="text-white">Rechazadas</h5>
+                        <h2 class="display-5 mb-0">{{ vm_stats.rejected }}</h2>
+                    </div>
+                    <div class="fs-1">
+                        <i class="bi bi-x-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card shadow-sm animated-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-clock-history me-1"></i>
+                    VMs Recientes
+                </h5>
+                <a href="{{ url_for('vms.list_vms') }}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-list me-1"></i>
+                    Ver Todas
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Solicitante</th>
+                                <th>Recursos</th>
+                                <th>Estado</th>
+                                <th>Fecha Solicitud</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vm in recent_vms %}
+                                <tr>
+                                    <td class="fw-bold">{{ vm.name }}</td>
+                                    <td>{{ vm.requester_name }}</td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ vm.cpu_count }} CPU</span>
+                                        <span class="badge bg-secondary">{{ vm.ram_amount }} GB RAM</span>
+                                        <span class="badge bg-secondary">{{ vm.disk_size }} GB Disco</span>
+                                    </td>
+                                    <td>
+                                        {% if vm.status == 'ACTIVO' %}
+                                            <span class="badge bg-success">Activo</span>
+                                        {% elif vm.status == 'PENDIENTE' %}
+                                            <span class="badge bg-warning">Pendiente</span>
+                                        {% elif vm.status == 'RECHAZADO' %}
+                                            <span class="badge bg-danger">Rechazado</span>
+                                        {% else %}
+                                            <span class="badge bg-info">En Pedido</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ vm.request_date.strftime('%d/%m/%Y %H:%M') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('vms.view_vm', vm_id=vm.id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        {% if current_user.is_admin or current_user.id == vm.created_by %}
+                                            <a href="{{ url_for('vms.edit_vm', vm_id=vm.id) }}" class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-3">
+                                        <div class="text-muted">
+                                            <i class="bi bi-info-circle me-1"></i>
+                                            No hay solicitudes de VM recientes
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

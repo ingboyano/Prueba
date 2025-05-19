@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="login-container flow-bg-gradient">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="login-logo-container text-center mb-4">
+                <img src="{{ url_for('static', filename='images/flow-logo.svg') }}" 
+                     alt="Flow Logo" 
+                     class="flow-logo animated-pulse animated-logo" 
+                     style="height: 80px;">
+            </div>
+            <div class="card shadow-lg border-glow">
+                <div class="card-header bg-dark text-center py-4">
+                    <h4 class="card-title mb-0 flow-accent">
+                        <i class="bi bi-shield-lock me-2"></i>Iniciar Sesión
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" class="login-form">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-4 form-floating animated-form-group">
+                            {{ form.username(class="form-control form-control-lg", placeholder="Usuario") }}
+                            {{ form.username.label }}
+                            <i class="bi bi-person form-icon"></i>
+                        </div>
+                        <div class="mb-4 form-floating animated-form-group">
+                            {{ form.password(class="form-control form-control-lg", placeholder="Contraseña") }}
+                            {{ form.password.label }}
+                            <i class="bi bi-key form-icon"></i>
+                        </div>
+                        {{ form.submit(class="btn btn-primary btn-lg w-100 animated-button") }}
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <small class="text-muted">Sistema de Gestión de Máquinas Virtuales de Flow</small>
+                </div>
+            </div>
+            <div class="flow-decoration">
+                <div class="flow-circle"></div>
+                <div class="flow-circle"></div>
+                <div class="flow-circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

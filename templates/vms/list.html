@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm animated-card">
+    <div class="card-header d-flex justify-content-between align-items-center py-3">
+        <h4 class="card-title mb-0">
+            <img src="{{ url_for('static', filename='images/flow-logo.svg') }}" alt="Flow Logo" class="me-2" style="height: 24px;">
+            Máquinas Virtuales
+        </h4>
+        <a href="{{ url_for('vms.new_vm') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i>
+            Nueva VM
+        </a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table id="vmTable" class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Solicitante</th>
+                        <th>Fecha Solicitud</th>
+                        <th>Recursos</th>
+                        <th>Sistema Operativo</th>
+                        <th>Ubicación</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vm in vms %}
+                    <tr>
+                        <td>
+                            <strong>{{ vm.name }}</strong>
+                            {% if vm.notes %}
+                            <i class="bi bi-info-circle ms-2 text-info" 
+                               data-bs-toggle="tooltip" 
+                               title="{{ vm.notes }}"></i>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ vm.requester_name }}
+                            {% if vm.requester_email %}
+                            <div class="small text-muted">
+                                <i class="bi bi-envelope me-1"></i>{{ vm.requester_email }}
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ vm.request_date.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td>
+                            <span class="badge bg-secondary me-1">{{ vm.cpu_count }} CPU</span>
+                            <span class="badge bg-secondary me-1">{{ vm.ram_amount }} GB RAM</span>
+                            <span class="badge bg-secondary">{{ vm.disk_size }} GB</span>
+                        </td>
+                        <td>
+                            {% if vm.operating_system %}
+                            {% set os_names = {
+                                'windows_server_2022': 'Windows Server 2022',
+                                'windows_server_2019': 'Windows Server 2019',
+                                'ubuntu_22_04': 'Ubuntu 22.04 LTS',
+                                'ubuntu_24_04': 'Ubuntu 24.04 LTS',
+                                'rhel_9': 'RHEL 9',
+                                'centos_stream_9': 'CentOS Stream 9',
+                                'debian_12': 'Debian 12',
+                                'other': 'Otro'
+                            } %}
+                            {{ os_names.get(vm.operating_system, vm.operating_system) }}
+                            {% else %}
+                            <span class="text-muted">No especificado</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if vm.physical_location %}
+                            <div>
+                                <i class="bi bi-building me-1"></i>{{ vm.physical_location }}
+                            </div>
+                            {% endif %}
+                            {% if vm.virtual_host %}
+                            <div>
+                                <i class="bi bi-hdd-network me-1"></i>{{ vm.virtual_host }}
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if current_user.is_admin %}
+                            <select class="form-select status-select" data-vm-id="{{ vm.id }}">
+                                <option value="EN PEDIDO" {% if vm.status == 'EN PEDIDO' %}selected{% endif %}>En Pedido</option>
+                                <option value="ACTIVO" {% if vm.status == 'ACTIVO' %}selected{% endif %}>Activo</option>
+                                <option value="RECHAZADO" {% if vm.status == 'RECHAZADO' %}selected{% endif %}>Rechazado</option>
+                                <option value="PENDIENTE" {% if vm.status == 'PENDIENTE' %}selected{% endif %}>Pendiente</option>
+                            </select>
+                            {% else %}
+                            {% set status_class = {
+                                'ACTIVO': 'success',
+                                'PENDIENTE': 'warning',
+                                'RECHAZADO': 'danger',
+                                'EN PEDIDO': 'info'
+                            } %}
+                            <span class="badge bg-{{ status_class.get(vm.status, 'secondary') }}">
+                                {{ vm.status.replace('_', ' ').title() }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{{ url_for('vms.view_vm', vm_id=vm.id) }}" 
+                                   class="btn btn-sm btn-info"
+                                   data-bs-toggle="tooltip"
+                                   title="Ver Detalles">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                {% if current_user.is_admin or current_user.id == vm.created_by %}
+                                <a href="{{ url_for('vms.edit_vm', vm_id=vm.id) }}" 
+                                   class="btn btn-sm btn-primary"
+                                   data-bs-toggle="tooltip"
+                                   title="Editar VM">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                {% endif %}
+                                <a href="{{ url_for('vms.vm_history', vm_id=vm.id) }}" 
+                                   class="btn btn-sm btn-secondary"
+                                   data-bs-toggle="tooltip"
+                                   title="Ver Historial">
+                                    <i class="bi bi-clock-history"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    $('#vmTable').DataTable({
+        order: [[2, 'desc']],
+        pageLength: 10,
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+        },
+        "initComplete": function() {
+            // Inicializa los tooltips después de que DataTables termine
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        }
+    });
+
+    $('.status-select').change(function() {
+        const vmId = $(this).data('vm-id');
+        const newStatus = $(this).val();
+        const statusText = $(this).find('option:selected').text();
+
+        if(confirm(`¿Confirma que desea cambiar el estado a "${statusText}"?`)) {
+            updateVMStatus(vmId, newStatus, statusText);
+        } else {
+            // Si cancela, regresa al valor anterior
+            $(this).val($(this).find('option[selected]').val());
+        }
+    });
+});
+
+function updateVMStatus(vmId, status, statusName) {
+    fetch(`/vms/${vmId}/status`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: status })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'éxito') {
+            showNotification(`Estado actualizado a: ${statusName}`, 'success');
+        } else {
+            showNotification('Error al actualizar el estado', 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Error de conexión', 'danger');
+    });
+}
+</script>
+{% endblock %}

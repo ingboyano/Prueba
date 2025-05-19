@@ -1,0 +1,26 @@
+Quiero hacer una pagina web en python, decide cual lenguaje me ayudaría para servirlo en apache y con una base de datos en mysql
+quiero una interfaz amigable para registrar VMS (maquinas virtuales)
+Hay que crear 2 ususarios con permisos direfentes: al ingresar a la pagina web tiene que pedir que se logee, en este caso seria usuario y contraseña los datos requeridos para el ingreso, el usuario administrador y su contraseña SvaTecnica1, y el ususario: cliente contraeña: Personal2
+El usuario cliente pueden acceder a ver la lista de todas la VMS cargadas los detalles de creacion, aprobacion de la VM y detalles de las vms como:
+NOMBRE DE VM
+NOMBRE DEL SOLICITANTE
+FECHA DE SOLICITUD
+NUMERO DE CPUS
+CANTIDAD DE MEMORIA RAM
+CANTIDAD DISCO DURO
+ESTADO DEL VM       ºEN PEDIDO º ACTIVO º RECHAZADO ºPENDIENTE
+Este formulario quedara a cargo del ususario usuario administrador aprobarlo o no y una vez el ususario administrador lo apruebe o o cambie su estado estara disponible el lista de VMS para que el ususario cliente y administrador lo puedan ver en la lista de VMS
+El ususario administrador puede revisar el los pedidos que el usuario cliente haya realizado para aprobar o no la VM solicitada y poder cargar en la base de dato 
+El usuario cliente solo podra pedir una VM nueva llenando en la pagina los siguientes datos
+los datos que quiero guardar son:
+NOMBRE DE VM
+NOMBRE DEL SOLICITANTE
+FECHA DE SOLICITUD
+NUMERO DE CPUS
+CANTIDAD DE MEMORIA RAM
+CANTIDAD DISCO DURO
+ESTADO DEL VM       ºEN PEDIDO º ACTIVO º RECHAZADO ºPENDIENTE
+ que se guarde eso en un MYSQL 
+En la web tinee que haber un buscador que traiga los datos de la VMS 
+Y QUE UNA LISTA SALGAN TODOS LOS NOMBRES DE LAS VMS CON SU ESTADO
+QUE SE PUEDAN EDITAR LA VMS EXITENTES PARA EDITAR SU CARACTERISTICAS PERO QUE SE GUARDE LOS DATOS ANTERIORES ANTES DE ACTUALIZAR LAS VMS Y QUE SE GUARDEN LAS FECHAS DE LA PRIMERA CREACION DE LA ACTUALIZACION Y QUE DE LA OPCION DE REVISAR LOS DATOS INICIALES Y QUE APAREZCAN LOS DATOS ACTUALIZADOS Y QUIEN SOLICITO LA ACTUALIZACION Y QUIEN PIDIO LA CREACION DE LA VM(MAQUINA VITUAL)

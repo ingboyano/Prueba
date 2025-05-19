@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm animated-card mb-4">
+    <div class="card-header bg-primary text-white py-3">
+        <h4 class="card-title mb-0">
+            <i class="bi {% if vm %}bi-pencil-square{% else %}bi-plus-circle{% endif %} me-2"></i>
+            {{ title }}
+        </h4>
+    </div>
+    <div class="card-body p-4">
+        <form method="POST" id="vmForm">
+            {{ form.hidden_tag() }}
+            
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 text-primary">
+                        <i class="bi bi-info-circle me-2"></i>Información Básica
+                    </h5>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.name.label(class="form-label fw-bold") }}
+                    {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else "")) }}
+                    {% for error in form.name.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.requester_name.label(class="form-label fw-bold") }}
+                    {{ form.requester_name(class="form-control" + (" is-invalid" if form.requester_name.errors else "")) }}
+                    {% for error in form.requester_name.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.requester_email.label(class="form-label fw-bold") }}
+                    {{ form.requester_email(class="form-control" + (" is-invalid" if form.requester_email.errors else "")) }}
+                    {% for error in form.requester_email.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 text-primary">
+                        <i class="bi bi-people me-2"></i>Administradores
+                    </h5>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.primary_admin_name.label(class="form-label fw-bold") }}
+                    {{ form.primary_admin_name(class="form-control" + (" is-invalid" if form.primary_admin_name.errors else "")) }}
+                    {% for error in form.primary_admin_name.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.primary_admin_email.label(class="form-label fw-bold") }}
+                    {{ form.primary_admin_email(class="form-control" + (" is-invalid" if form.primary_admin_email.errors else "")) }}
+                    {% for error in form.primary_admin_email.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.secondary_admin_name.label(class="form-label fw-bold") }}
+                    {{ form.secondary_admin_name(class="form-control" + (" is-invalid" if form.secondary_admin_name.errors else "")) }}
+                    {% for error in form.secondary_admin_name.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.secondary_admin_email.label(class="form-label fw-bold") }}
+                    {{ form.secondary_admin_email(class="form-control" + (" is-invalid" if form.secondary_admin_email.errors else "")) }}
+                    {% for error in form.secondary_admin_email.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 text-primary">
+                        <i class="bi bi-cpu me-2"></i>Especificaciones Técnicas
+                    </h5>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    {{ form.cpu_count.label(class="form-label fw-bold") }}
+                    {{ form.cpu_count(class="form-control" + (" is-invalid" if form.cpu_count.errors else ""), type="number") }}
+                    {% for error in form.cpu_count.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    {{ form.ram_amount.label(class="form-label fw-bold") }}
+                    {{ form.ram_amount(class="form-control" + (" is-invalid" if form.ram_amount.errors else ""), type="number") }}
+                    {% for error in form.ram_amount.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    {{ form.disk_size.label(class="form-label fw-bold") }}
+                    {{ form.disk_size(class="form-control" + (" is-invalid" if form.disk_size.errors else ""), type="number") }}
+                    {% for error in form.disk_size.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.operating_system.label(class="form-label fw-bold") }}
+                    {{ form.operating_system(class="form-select" + (" is-invalid" if form.operating_system.errors else "")) }}
+                    {% for error in form.operating_system.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 text-primary">
+                        <i class="bi bi-geo-alt me-2"></i>Ubicación
+                    </h5>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.physical_location.label(class="form-label fw-bold") }}
+                    {{ form.physical_location(class="form-control" + (" is-invalid" if form.physical_location.errors else "")) }}
+                    {% for error in form.physical_location.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.virtual_host.label(class="form-label fw-bold") }}
+                    {{ form.virtual_host(class="form-control" + (" is-invalid" if form.virtual_host.errors else "")) }}
+                    {% for error in form.virtual_host.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 text-primary">
+                        <i class="bi bi-cloud-upload me-2"></i>Respaldo
+                    </h5>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <div class="form-check form-switch">
+                        {{ form.backup_required(class="form-check-input") }}
+                        {{ form.backup_required.label(class="form-check-label fw-bold") }}
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    {{ form.backup_frequency.label(class="form-label fw-bold") }}
+                    {{ form.backup_frequency(class="form-select" + (" is-invalid" if form.backup_frequency.errors else "")) }}
+                    {% for error in form.backup_frequency.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 text-primary">
+                        <i class="bi bi-diagram-3 me-2"></i>Red
+                    </h5>
+                </div>
+                
+                <div class="col-md-12 mb-3">
+                    {{ form.vlans.label(class="form-label fw-bold") }}
+                    {{ form.vlans(class="form-control" + (" is-invalid" if form.vlans.errors else "")) }}
+                    <small class="form-text text-muted">{{ form.vlans.description }}</small>
+                    {% for error in form.vlans.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 text-primary">
+                        <i class="bi bi-card-text me-2"></i>Notas Adicionales
+                    </h5>
+                </div>
+                
+                <div class="col-md-12 mb-3">
+                    {{ form.notes.label(class="form-label fw-bold") }}
+                    {{ form.notes(class="form-control" + (" is-invalid" if form.notes.errors else ""), rows=5) }}
+                    {% for error in form.notes.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{{ url_for('vms.list_vms') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Cancelar
+                </a>
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Manejo de la lógica para backup
+    $('#backup_required').change(function() {
+        if($(this).is(':checked')) {
+            $('#backup_frequency').prop('disabled', false);
+        } else {
+            $('#backup_frequency').val('');
+            $('#backup_frequency').prop('disabled', true);
+        }
+    });
+    
+    // Inicializar el estado
+    if(!$('#backup_required').is(':checked')) {
+        $('#backup_frequency').prop('disabled', true);
+    }
+});
+</script>
+{% endblock %}
