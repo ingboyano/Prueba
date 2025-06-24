@@ -132,6 +132,10 @@
         </div>
     </div>
 </div>
+
+<!-- Aquí agregamos un campo oculto con el token CSRF para JS -->
+<input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
+
 {% endblock %}
 
 {% block scripts %}
@@ -143,7 +147,7 @@ $(document).ready(function() {
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
         },
-        "initComplete": function() {
+        initComplete: function() {
             // Inicializa los tooltips después de que DataTables termine
             $('[data-bs-toggle="tooltip"]').tooltip();
         }
@@ -154,35 +158,51 @@ $(document).ready(function() {
         const newStatus = $(this).val();
         const statusText = $(this).find('option:selected').text();
 
-        if(confirm(`¿Confirma que desea cambiar el estado a "${statusText}"?`)) {
-            updateVMStatus(vmId, newStatus, statusText);
+        if (confirm(`¿Confirma que desea cambiar el estado a "${statusText}"?`)) {
+            updateVMStatus(vmId, newStatus, statusText, this);
         } else {
-            // Si cancela, regresa al valor anterior
-            $(this).val($(this).find('option[selected]').val());
+            // Regresa al valor anterior si cancela
+            // Aquí intentamos guardar el valor seleccionado antes del cambio para restaurar
+            // Como no está almacenado, regresamos a la opción seleccionada inicialmente con selected
+            // Mejor recargar la página para evitar inconsistencias o recargar el valor previo manualmente
+            location.reload();
         }
     });
 });
 
-function updateVMStatus(vmId, status, statusName) {
+function updateVMStatus(vmId, status, statusName, selectElement) {
+    const csrfToken = document.getElementById('csrf_token').value;
+
     fetch(`/vms/${vmId}/status`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
         },
         body: JSON.stringify({ status: status })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) throw new Error('Error en la respuesta');
+        return response.json();
+    })
     .then(data => {
         if (data.status === 'éxito') {
             showNotification(`Estado actualizado a: ${statusName}`, 'success');
         } else {
             showNotification('Error al actualizar el estado', 'danger');
+            // Si error, volvemos al valor anterior
+            location.reload();
         }
     })
     .catch(error => {
         console.error('Error:', error);
         showNotification('Error de conexión', 'danger');
+        location.reload();
     });
+}
+
+function showNotification(message, type) {
+    alert(`${type.toUpperCase()}: ${message}`);
 }
 </script>
 {% endblock %}

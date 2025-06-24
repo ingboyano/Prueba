@@ -1,19 +1,25 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="card shadow-sm animated-card mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+    <div
+        class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3"
+    >
         <h4 class="card-title mb-0">
             <i class="bi bi-hdd-stack me-2"></i>
             Detalles de VM: {{ vm.name }}
         </h4>
         <div>
             {% if current_user.is_admin or current_user.id == vm.created_by %}
-            <a href="{{ url_for('vms.edit_vm', vm_id=vm.id) }}" class="btn btn-light me-2">
+            <a
+                href="{{ url_for('vms.edit_vm', vm_id=vm.id) }}"
+                class="btn btn-light me-2"
+            >
                 <i class="bi bi-pencil me-1"></i>Editar
             </a>
             {% endif %}
-            <a href="{{ url_for('vms.vm_history', vm_id=vm.id) }}" class="btn btn-info">
+            <a
+                href="{{ url_for('vms.vm_history', vm_id=vm.id) }}"
+                class="btn btn-info"
+            >
                 <i class="bi bi-clock-history me-1"></i>Historial
             </a>
         </div>
@@ -22,7 +28,9 @@
         <div class="p-4">
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h5 class="card-subtitle mb-3 text-primary border-bottom pb-2">
+                    <h5
+                        class="card-subtitle mb-3 text-primary border-bottom pb-2"
+                    >
                         <i class="bi bi-info-circle me-2"></i>Información Básica
                     </h5>
                     <table class="table table-sm">
@@ -42,7 +50,9 @@
                             <th>Correo:</th>
                             <td>
                                 {% if vm.requester_email %}
-                                <a href="mailto:{{ vm.requester_email }}">{{ vm.requester_email }}</a>
+                                <a href="mailto:{{ vm.requester_email }}"
+                                    >{{ vm.requester_email }}</a
+                                >
                                 {% else %}
                                 <span class="text-muted">No especificado</span>
                                 {% endif %}
@@ -50,18 +60,19 @@
                         </tr>
                         <tr>
                             <th>Fecha de Solicitud:</th>
-                            <td>{{ vm.request_date.strftime('%d/%m/%Y %H:%M') }}</td>
+                            <td>
+                                {{ vm.request_date.strftime('%d/%m/%Y %H:%M') }}
+                            </td>
                         </tr>
                         <tr>
                             <th>Estado:</th>
                             <td>
-                                {% set status_class = {
-                                    'ACTIVO': 'success',
-                                    'PENDIENTE': 'warning',
-                                    'RECHAZADO': 'danger',
-                                    'EN PEDIDO': 'info'
-                                } %}
-                                <span class="badge bg-{{ status_class.get(vm.status, 'secondary') }}">
+                                {% set status_class = { 'ACTIVO': 'success',
+                                'PENDIENTE': 'warning', 'RECHAZADO': 'danger',
+                                'EN PEDIDO': 'info' } %}
+                                <span
+                                    class="badge bg-{{ status_class.get(vm.status, 'secondary') }}"
+                                >
                                     {{ vm.status.replace('_', ' ').title() }}
                                 </span>
                             </td>
@@ -72,18 +83,19 @@
                         </tr>
                     </table>
                 </div>
-                
+
                 <div class="col-md-6">
-                    <h5 class="card-subtitle mb-3 text-primary border-bottom pb-2">
+                    <h5
+                        class="card-subtitle mb-3 text-primary border-bottom pb-2"
+                    >
                         <i class="bi bi-people me-2"></i>Administradores
                     </h5>
                     <table class="table table-sm">
                         <tr>
                             <th class="w-40">Admin Principal:</th>
                             <td>
-                                {% if vm.primary_admin_name %}
-                                {{ vm.primary_admin_name }}
-                                {% else %}
+                                {% if vm.primary_admin_name %} {{
+                                vm.primary_admin_name }} {% else %}
                                 <span class="text-muted">No especificado</span>
                                 {% endif %}
                             </td>
@@ -92,7 +104,9 @@
                             <th>Correo Admin Principal:</th>
                             <td>
                                 {% if vm.primary_admin_email %}
-                                <a href="mailto:{{ vm.primary_admin_email }}">{{ vm.primary_admin_email }}</a>
+                                <a href="mailto:{{ vm.primary_admin_email }}"
+                                    >{{ vm.primary_admin_email }}</a
+                                >
                                 {% else %}
                                 <span class="text-muted">No especificado</span>
                                 {% endif %}
@@ -101,9 +115,8 @@
                         <tr>
                             <th>Admin Secundario:</th>
                             <td>
-                                {% if vm.secondary_admin_name %}
-                                {{ vm.secondary_admin_name }}
-                                {% else %}
+                                {% if vm.secondary_admin_name %} {{
+                                vm.secondary_admin_name }} {% else %}
                                 <span class="text-muted">No especificado</span>
                                 {% endif %}
                             </td>
@@ -112,7 +125,9 @@
                             <th>Correo Admin Secundario:</th>
                             <td>
                                 {% if vm.secondary_admin_email %}
-                                <a href="mailto:{{ vm.secondary_admin_email }}">{{ vm.secondary_admin_email }}</a>
+                                <a href="mailto:{{ vm.secondary_admin_email }}"
+                                    >{{ vm.secondary_admin_email }}</a
+                                >
                                 {% else %}
                                 <span class="text-muted">No especificado</span>
                                 {% endif %}
@@ -121,10 +136,12 @@
                     </table>
                 </div>
             </div>
-            
+
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h5 class="card-subtitle mb-3 text-primary border-bottom pb-2">
+                    <h5
+                        class="card-subtitle mb-3 text-primary border-bottom pb-2"
+                    >
                         <i class="bi bi-cpu me-2"></i>Especificaciones Técnicas
                     </h5>
                     <table class="table table-sm">
@@ -143,37 +160,34 @@
                         <tr>
                             <th>Sistema Operativo:</th>
                             <td>
-                                {% if vm.operating_system %}
-                                {% set os_names = {
-                                    'windows_server_2022': 'Windows Server 2022',
-                                    'windows_server_2019': 'Windows Server 2019',
-                                    'ubuntu_22_04': 'Ubuntu 22.04 LTS',
-                                    'ubuntu_24_04': 'Ubuntu 24.04 LTS',
-                                    'rhel_9': 'RHEL 9',
-                                    'centos_stream_9': 'CentOS Stream 9',
-                                    'debian_12': 'Debian 12',
-                                    'other': 'Otro'
-                                } %}
-                                {{ os_names.get(vm.operating_system, vm.operating_system) }}
-                                {% else %}
+                                {% if vm.operating_system %} {% set os_names = {
+                                'windows_server_2022': 'Windows Server 2022',
+                                'windows_server_2019': 'Windows Server 2019',
+                                'ubuntu_22_04': 'Ubuntu 22.04 LTS',
+                                'ubuntu_24_04': 'Ubuntu 24.04 LTS', 'rhel_9':
+                                'RHEL 9', 'centos_stream_9': 'CentOS Stream 9',
+                                'debian_12': 'Debian 12', 'other': 'Otro' } %}
+                                {{ os_names.get(vm.operating_system,
+                                vm.operating_system) }} {% else %}
                                 <span class="text-muted">No especificado</span>
                                 {% endif %}
                             </td>
                         </tr>
                     </table>
                 </div>
-                
+
                 <div class="col-md-6">
-                    <h5 class="card-subtitle mb-3 text-primary border-bottom pb-2">
+                    <h5
+                        class="card-subtitle mb-3 text-primary border-bottom pb-2"
+                    >
                         <i class="bi bi-geo-alt me-2"></i>Ubicación
                     </h5>
                     <table class="table table-sm">
                         <tr>
                             <th class="w-40">Ubicación Física:</th>
                             <td>
-                                {% if vm.physical_location %}
-                                {{ vm.physical_location }}
-                                {% else %}
+                                {% if vm.physical_location %} {{
+                                vm.physical_location }} {% else %}
                                 <span class="text-muted">No especificada</span>
                                 {% endif %}
                             </td>
@@ -181,8 +195,7 @@
                         <tr>
                             <th>Host Virtual:</th>
                             <td>
-                                {% if vm.virtual_host %}
-                                {{ vm.virtual_host }}
+                                {% if vm.virtual_host %} {{ vm.virtual_host }}
                                 {% else %}
                                 <span class="text-muted">No especificado</span>
                                 {% endif %}
@@ -191,10 +204,12 @@
                     </table>
                 </div>
             </div>
-            
+
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h5 class="card-subtitle mb-3 text-primary border-bottom pb-2">
+                    <h5
+                        class="card-subtitle mb-3 text-primary border-bottom pb-2"
+                    >
                         <i class="bi bi-cloud-upload me-2"></i>Respaldo
                     </h5>
                     <table class="table table-sm">
@@ -211,35 +226,33 @@
                         <tr>
                             <th>Frecuencia de Respaldo:</th>
                             <td>
-                                {% if vm.backup_frequency %}
-                                {% set backup_names = {
-                                    'daily': 'Diario',
-                                    'weekly': 'Semanal',
-                                    'monthly': 'Mensual',
-                                    'custom': 'Personalizada'
-                                } %}
-                                {{ backup_names.get(vm.backup_frequency, vm.backup_frequency) }}
-                                {% else %}
+                                {% if vm.backup_frequency %} {% set backup_names
+                                = { 'daily': 'Diario', 'weekly': 'Semanal',
+                                'monthly': 'Mensual', 'custom': 'Personalizada'
+                                } %} {{ backup_names.get(vm.backup_frequency,
+                                vm.backup_frequency) }} {% else %}
                                 <span class="text-muted">No aplica</span>
                                 {% endif %}
                             </td>
                         </tr>
                     </table>
                 </div>
-                
+
                 <div class="col-md-6">
-                    <h5 class="card-subtitle mb-3 text-primary border-bottom pb-2">
+                    <h5
+                        class="card-subtitle mb-3 text-primary border-bottom pb-2"
+                    >
                         <i class="bi bi-diagram-3 me-2"></i>Red
                     </h5>
                     <table class="table table-sm">
                         <tr>
                             <th class="w-40">VLANs:</th>
                             <td>
-                                {% if vm.vlans %}
-                                {% for vlan in vm.vlans %}
-                                <span class="badge bg-secondary me-1">{{ vlan }}</span>
-                                {% endfor %}
-                                {% else %}
+                                {% if vm.vlans %} {% for vlan in vm.vlans %}
+                                <span class="badge bg-secondary me-1"
+                                    >{{ vlan }}</span
+                                >
+                                {% endfor %} {% else %}
                                 <span class="text-muted">No especificadas</span>
                                 {% endif %}
                             </td>
@@ -247,16 +260,16 @@
                     </table>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-12">
-                    <h5 class="card-subtitle mb-3 text-primary border-bottom pb-2">
+                    <h5
+                        class="card-subtitle mb-3 text-primary border-bottom pb-2"
+                    >
                         <i class="bi bi-card-text me-2"></i>Notas Adicionales
                     </h5>
                     <div class="p-3 bg-light rounded">
-                        {% if vm.notes %}
-                        {{ vm.notes|nl2br }}
-                        {% else %}
+                        {% if vm.notes %} {{ vm.notes|nl2br }} {% else %}
                         <span class="text-muted">No hay notas adicionales</span>
                         {% endif %}
                     </div>
@@ -270,49 +283,80 @@
                 <i class="bi bi-arrow-left me-1"></i>Volver a la lista
             </a>
             {% if current_user.is_admin %}
-            <button type="button" class="btn btn-success" data-vm-id="{{ vm.id }}" data-status="ACTIVO" onclick="changeStatus(this)">
+            <button
+                type="button"
+                class="btn btn-success"
+                data-vm-id="{{ vm.id }}"
+                data-status="ACTIVO"
+                onclick="changeStatus(this)"
+            >
                 <i class="bi bi-check-circle me-1"></i>Aprobar
             </button>
-            <button type="button" class="btn btn-danger" data-vm-id="{{ vm.id }}" data-status="RECHAZADO" onclick="changeStatus(this)">
+            <button
+                type="button"
+                class="btn btn-danger"
+                data-vm-id="{{ vm.id }}"
+                data-status="RECHAZADO"
+                onclick="changeStatus(this)"
+            >
                 <i class="bi bi-x-circle me-1"></i>Rechazar
             </button>
             {% endif %}
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script>
-function changeStatus(button) {
-    const vmId = $(button).data('vm-id');
-    const status = $(button).data('status');
-    const statusText = status === 'ACTIVO' ? 'aprobar' : 'rechazar';
-    
-    if(confirm(`¿Está seguro que desea ${statusText} esta VM?`)) {
-        fetch(`/vms/${vmId}/status`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ status: status })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'éxito') {
-                showNotification(`VM ${statusText === 'aprobar' ? 'aprobada' : 'rechazada'} correctamente`, 'success');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
-            } else {
-                showNotification('Error al actualizar el estado', 'danger');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('Error de conexión', 'danger');
-        });
+    function changeStatus(button) {
+        const vmId = $(button).data("vm-id");
+        const status = $(button).data("status");
+        const statusText = status === "ACTIVO" ? "aprobar" : "rechazar";
+
+        console.log("Intentando cambiar el estado de la VM:");
+        console.log("ID:", vmId, "Nuevo estado:", status);
+
+        if (confirm(`¿Está seguro que desea ${statusText} esta VM?`)) {
+            fetch(`/vms/${vmId}/status`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // 'Authorization': 'Bearer TU_TOKEN_AQUI' // si tu backend requiere autenticación
+                },
+                body: JSON.stringify({ status: status }),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        // Mostrar errores específicos si no es éxito (status 200)
+                        console.error(
+                            `Error HTTP ${response.status}: ${response.statusText}`,
+                        );
+                        throw new Error("Respuesta no exitosa del servidor");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log("Respuesta del servidor:", data);
+
+                    if (data.status === "éxito") {
+                        showNotification(
+                            `VM ${statusText === "aprobar" ? "aprobada" : "rechazada"} correctamente`,
+                            "success",
+                        );
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        showNotification(
+                            data.message || "Error al actualizar el estado",
+                            "danger",
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error de conexión o fetch:", error);
+                    showNotification("Error de conexión al servidor", "danger");
+                });
+        }
     }
-}
 </script>
 {% endblock %}
